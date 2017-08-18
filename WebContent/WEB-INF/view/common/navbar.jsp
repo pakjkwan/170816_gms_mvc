@@ -56,6 +56,10 @@
 	function deleteTarget(target){
 		prompt(target+'의 ID?');
 	}
+	function list(dir,page,pageNumber){
+		location.href="${ctx}/"+dir+".do?action=list&page="+page
+					+"&pageNumber="+pageNumber;
+	}
 	function mainLoad(){
 		var main_ul=[];
 		var u1=document.getElementById("main_ul_stu");
@@ -78,15 +82,15 @@
 			u3c[i].setAttribute("class", "list-group-item");
 		}
 		u1c[0].setAttribute("onclick","moveTo('member','member_add')");
-		u1c[1].setAttribute("onclick","moveTo('member','member_list')");
+		u1c[1].setAttribute("onclick","list('member','member_list','1')");
 		u1c[2].setAttribute("onclick","moveTo('member','member_detail')");
 		u1c[3].setAttribute("onclick","deleteTarget('학생 ')");
 		u2c[0].setAttribute("onclick","moveTo('grade','grade_add')");
-		u2c[1].setAttribute("onclick","moveTo('grade','grade_list')");
+		u2c[1].setAttribute("onclick","list('grade','grade_list','1')");
 		u2c[2].setAttribute("onclick","moveTo('grade','grade_detail')");
 		u2c[3].setAttribute("onclick","deleteTarget('성적 ')");
 		u3c[0].setAttribute("onclick","moveTo('board','board_add')");
-		u3c[1].setAttribute("onclick","moveTo('board','board_list')");
+		u3c[1].setAttribute("onclick","list('board','board_list','1')");
 		u3c[2].setAttribute("onclick","moveTo('board','board_detail')");
 		u3c[3].setAttribute("onclick","deleteTarget('게시글 ')");
 	}
@@ -101,19 +105,19 @@
 		u2.setAttribute("class", "dropdown-menu");
 		u3.setAttribute("class", "dropdown-menu");
 		u1c[0].setAttribute("onclick","moveTo('member','member_add')");
-		u1c[1].setAttribute("onclick","moveTo('member','member_list')");
+		u1c[1].setAttribute("onclick","list('member','member_list','1')");
 		u1c[2].setAttribute("onclick","moveTo('member','member_detail')");
 		u1c[3].setAttribute("role", "separator");
 		u1c[3].setAttribute("class", "divider");
 		u1c[4].setAttribute("onclick","deleteTarget('학생 ')");
 		u2c[0].setAttribute("onclick","moveTo('grade','grade_add')");
-		u2c[1].setAttribute("onclick","moveTo('grade','grade_list')");
+		u2c[1].setAttribute("onclick","list('grade','grade_list','1')");
 		u2c[2].setAttribute("onclick","moveTo('grade','grade_detail')");
 		u2c[3].setAttribute("role", "separator");
 		u2c[3].setAttribute("class", "divider");
 		u2c[4].setAttribute("onclick","deleteTarget('성적 ')");
 		u3c[0].setAttribute("onclick","moveTo('board','board_add')");
-		u3c[1].setAttribute("onclick","moveTo('board','board_list')");
+		u3c[1].setAttribute("onclick","list('board','board_list','1')");
 		u3c[2].setAttribute("onclick","moveTo('board','board_detail')");
 		u3c[3].setAttribute("role", "separator");
 		u3c[3].setAttribute("class", "divider");

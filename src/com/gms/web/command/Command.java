@@ -33,6 +33,7 @@ public class Command implements Commandable{
 	@Override
 	public void process() {
 		this.view=Path.VIEW+dir+Path.SEPARATOR+page+Extension.JSP;
+		System.out.println("이동 페이지: "+view);
 	}
 	@Override
 	public String toString() {

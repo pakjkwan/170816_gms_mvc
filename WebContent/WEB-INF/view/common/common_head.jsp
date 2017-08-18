@@ -12,6 +12,4 @@
 </head>
 <body>
 <div id="wrapper">
-<header>
-<jsp:include page="navbar.jsp"/>
-</header>
+

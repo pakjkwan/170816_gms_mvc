@@ -71,12 +71,12 @@ private ArticleDAOImpl() {
 			ResultSet rs=pstmt.executeQuery();
 			while(rs.next()){
 				bean=new ArticleBean();
-				bean.setArticleSeq(rs.getInt("article_seq"));
-				bean.setId(rs.getString("id"));
-				bean.setTitle(rs.getString("title"));
-				bean.setContent(rs.getString("content"));
-				bean.setHitcount(rs.getInt("hitcount"));
-				bean.setRegdate(rs.getString("regdate"));
+				bean.setArticleSeq(rs.getInt(DB.ARTICLE_SEQ));
+				bean.setId(rs.getString(DB.ID));
+				bean.setTitle(rs.getString(DB.TITLE));
+				bean.setContent(rs.getString(DB.CONTENT));
+				bean.setHitcount(rs.getInt(DB.HITCOUNT));
+				bean.setRegdate(rs.getString(DB.REGDATE));
 				list.add(bean);
 			}
 		} catch (SQLException e) {
@@ -94,12 +94,12 @@ private ArticleDAOImpl() {
 			pstmt.setInt(1, Integer.parseInt(seq));
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()){
-				bean.setArticleSeq(rs.getInt(DB.BOARD_ARTICLE_SEQ));
-				bean.setContent(rs.getString(DB.BOARD_CONTENT));
-				bean.setHitcount(rs.getInt(DB.BOARD_HITCOUNT));
-				bean.setId(rs.getString(DB.MEMBER_ID));
-				bean.setRegdate(rs.getString(DB.BOARD_REGDATE));
-				bean.setTitle(rs.getString(DB.BOARD_TITLE));
+				bean.setArticleSeq(rs.getInt(DB.ARTICLE_SEQ));
+				bean.setContent(rs.getString(DB.CONTENT));
+				bean.setHitcount(rs.getInt(DB.HITCOUNT));
+				bean.setId(rs.getString(DB.ID));
+				bean.setRegdate(rs.getString(DB.REGDATE));
+				bean.setTitle(rs.getString(DB.TITLE));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

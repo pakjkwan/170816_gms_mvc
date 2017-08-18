@@ -1,43 +1,97 @@
 package com.gms.web.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.gms.web.constant.DB;
 import com.gms.web.constant.SQL;
 import com.gms.web.constant.Vendor;
+import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
+import com.gms.web.domain.StudentBean;
 import com.gms.web.factory.DatabaseFactory;
 public class MemberDAOImpl implements MemberDAO{
+	Connection conn;
 	public static MemberDAOImpl getInstance() {return new MemberDAOImpl();}
-	private MemberDAOImpl(){}
+	private MemberDAOImpl(){
+		conn=null;
+	}
 	@Override
-	public String insert(MemberBean bean) {
+	public String insert(Map<?,?>map) {
 		String rs="";
-		try {PreparedStatement pstmt= DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.ARTICLE_INSERT);
+		MemberBean bean=(MemberBean)map.get("member");
+		@SuppressWarnings("unchecked")
+		List<MajorBean> list=(List<MajorBean>) map.get("major");
+		PreparedStatement pstmt=null;
+		try {
+			conn=DatabaseFactory
+					.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD)
+					.getConnection(); 
+			conn.setAutoCommit(false);
+			pstmt=conn.prepareStatement(SQL.MEMBER_INSERT);
 			pstmt.setString(1, bean.getId());
 			pstmt.setString(2, bean.getName());
 			pstmt.setString(3, bean.getPassword());
-			rs =String.valueOf(pstmt.executeUpdate());
+			pstmt.setString(4, bean.getBirthday());
+			pstmt.setString(5, bean.getPhone());
+			pstmt.setString(6, bean.getEmail());
+			pstmt.setString(7, bean.getProfile());
+			System.out.println("***"+SQL.MEMBER_INSERT);
+			pstmt.executeUpdate();
+			for(int i=0;i<list.size();i++){
+				pstmt=conn.prepareStatement(SQL.MAJOR_INSERT);
+				pstmt.setString(1, list.get(i).getMajorId());
+				pstmt.setString(2, list.get(i).getTitle());
+				pstmt.setString(3, list.get(i).getId());
+				pstmt.setString(4, list.get(i).getSubjId());
+				rs=String.valueOf(pstmt.executeUpdate());
+				System.out.println("***"+SQL.MAJOR_INSERT);
+				System.out.println("******"+rs);
+			}
+			
+			conn.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			if(conn !=null){
+				try{
+					conn.rollback();
+				}catch(SQLException ex){
+					e.printStackTrace();
+				}
+			}
+			
 		}
+		try {
+			conn.setAutoCommit(true);
+			System.out.println("**setAutoCommit(true)***");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("##### "+rs);
 		return rs;
 	}
 
 	@Override
-	public List<MemberBean> selectAll() {
-		List<MemberBean>list=new ArrayList<>();
+	public List<?> selectAll() {
+		List<StudentBean>list=new ArrayList<>();
 		try {
-			ResultSet rs=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_LIST).executeQuery();
-			MemberBean member=null;
+			ResultSet rs=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_LIST).executeQuery();
+			StudentBean member=null;
 			while(rs.next()){
-				member=new MemberBean();
-				member.setId(rs.getString(DB.MEMBER_ID));
-				member.setName(rs.getString(DB.MEMBER_NAME));
-				member.setPassword(rs.getString(DB.MEMBER_PASS));
+				member=new StudentBean();
+				member.setNum(rs.getString(DB.NUM));
+				member.setId(rs.getString(DB.ID));
+				member.setName(rs.getString(DB.NAME));
+				member.setEmail(rs.getString(DB.EMAIL));
+				member.setPhone(rs.getString(DB.PHONE));
+				member.setRegdate(rs.getString(DB.REGDATE));
+				member.setSsn(rs.getString(DB.SSN));
+				member.setTitle(rs.getString(DB.TITLE));
 				list.add(member);
 			}
 		} catch (Exception e) {
@@ -56,9 +110,9 @@ public class MemberDAOImpl implements MemberDAO{
 			MemberBean member=null;
 			while(rs.next()){
 				member=new MemberBean();
-				member.setId(rs.getString(DB.MEMBER_ID));
-				member.setName(rs.getString(DB.MEMBER_NAME));
-				member.setPassword(rs.getString(DB.MEMBER_PASS));
+				member.setId(rs.getString(DB.ID));
+				member.setName(rs.getString(DB.NAME));
+				member.setPassword(rs.getString(DB.PASS));
 				list.add(member);
 			}
 		} catch (Exception e) {
@@ -77,8 +131,8 @@ public class MemberDAOImpl implements MemberDAO{
 			if(rs.next()){
 				member=new MemberBean();
 				member.setId(rs.getString(DB.MEMBER_ID));
-				member.setName(rs.getString(DB.MEMBER_NAME));
-				member.setPassword(rs.getString(DB.MEMBER_PASS));
+				member.setName(rs.getString(DB.NAME));
+				member.setPassword(rs.getString(DB.PASS));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

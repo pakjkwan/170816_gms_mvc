@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 
 import com.gms.web.constant.DB;
 
+import lombok.Data;
+@Data
 public class DatabaseBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String driver,url,username,password;

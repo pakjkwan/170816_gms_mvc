@@ -75,6 +75,7 @@ DROP TABLE Member;
 -- DML
 INSERT INTO Member(member_id,name,password,ssn,regdate,major_id,phone,email,profile)
 VALUES('mankiew','맨큐','1','701201-123456',SYSDATE,'economics','010-1234-5678','mankiew@test.com','mankiew.jpg');
+select * from member;
 SELECT 
 member_id,name,password,ssn,major_id,
 phone,email,profile,regdate 
@@ -222,19 +223,89 @@ create table female(
 );
 
 select * from member where member_id like 'hong';
+select * from major;
+select * from member;
+select rownum num,t.*
+from (select * 
+from member m join major j
+on m.member_id = j.member_id) t
+;
+select * from student;
+drop table student;
+
+create view student (num,id,name,ssn,regdate,phone,email,title)
+as
+select rownum num, t.*
+from(select 
+		a.member_id id, a.name, rpad(substr(a.ssn,1,8),14,'*') ssn, 
+		to_char(a.regdate,'yyyy-MM-dd') regdate, a.phone, a.email,
+		listagg(s.title,',') within group(order by s.title) title
+	from member a
+		left join major m on a.member_id like m.member_id
+		left join subject s on m.subj_id like s.subj_id
+		group by a.member_id, a.name, a.ssn, a.regdate, a.phone, a.email
+		order by regdate 
+	)t
+order by rownum desc;
+
+
+select 
+a.member_id, a.name, a.ssn, a.regdate, a.phone, a.email,
+	listagg(s.title,',') within group(order by s.title) title
+from member a
+left join major m on a.member_id like m.member_id
+left join subject s on m.subj_id like s.subj_id
+group by a.member_id, a.name, a.ssn, a.regdate, a.phone, a.email;
+
+select listagg(title,',') within group(order by title) title
+from subject;
+
+
+
+select * from student
+where rownum <= 5;
+;
+
+select  t.*
+from (select * from student
+where num >((select count(*) from student) -5)) t
+;
+
+
+SELECT t2.*
+FROM (SELECT ROWNUM seq,t.*
+FROM (SELECT *FROM student ORDER BY num DESC) t) t2
+WHERE t2.seq BETWEEN 6 AND 10;
+
+SELECT t2.* 
+FROM (SELECT ROWNUM seq,t.* 
+   	  FROM (SELECT * 
+   	  			FROM student 
+   	  			ORDER BY num DESC) t) t2
+WHERE t2.seq BETWEEN 1 AND 5;
 
 
 
 
+select * from student;
 
 
 
+select rownum, s.*
+from student s
+where rownum between 6 and 10;
 
+select t.*
+from (select rownum rnum, s.* 
+		from student s)t
+where t.rnum between 1 and 5;
 
-
-
-
-
+SELECT t2.*
+FROM (SELECT ROWNUM seq,t.*
+  FROM (SELECT *
+  FROM student
+  ORDER BY num DESC) t) t2
+WHERE t2.seq BETWEEN 1 AND 5;
 
 
 

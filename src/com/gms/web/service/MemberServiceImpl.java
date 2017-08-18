@@ -22,15 +22,16 @@ public class MemberServiceImpl implements MemberService{
 		@SuppressWarnings("unchecked")
 		List<MajorBean>list=(List<MajorBean>)map.get("major");
 		System.out.println("넘어온 수강과목:"+list);
-		
-		return null;
+		String rs=MemberDAOImpl.getInstance().insert(map);
+		System.out.println("서비스 RS :"+rs);
+		return rs;
 	}
 	@Override
-	public List<MemberBean> list() {
+	public List<?> list() {
 		return MemberDAOImpl.getInstance().selectAll();
 	}
 	@Override
-	public List<MemberBean> findByName(String name) {
+	public List<?> findByName(String name) {
 		
 		return MemberDAOImpl.getInstance().selectAll();
 	}

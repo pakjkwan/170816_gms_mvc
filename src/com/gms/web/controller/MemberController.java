@@ -12,8 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gms.web.constant.Action;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
+import com.gms.web.domain.StudentBean;
+import com.gms.web.proxy.Agency;
+import com.gms.web.proxy.RowsHandler;
+import com.gms.web.proxy.PageProxy;
 import com.gms.web.service.MemberService;
 import com.gms.web.service.MemberServiceImpl;
 import com.gms.web.util.DispatcherServlet;
@@ -24,6 +29,7 @@ import com.gms.web.util.Separator;
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	@SuppressWarnings("unchecked")
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("MemberController 진입");
 		Separator.init(request);
@@ -31,8 +37,8 @@ public class MemberController extends HttpServlet {
 		MemberService service=MemberServiceImpl.getInstance();
 		
 		switch (request.getParameter("action")) {
-		case "move":DispatcherServlet.send(request, response);break;
-		case "join": 
+		case Action.MOVE:DispatcherServlet.send(request, response);break;
+		case Action.JOIN: 
 			System.out.println("=== join 진입 ===");	
 			Map<?,?> map=ParamsIterator.execute(request);
 			member.setId((String)map.get("id"));
@@ -43,7 +49,7 @@ public class MemberController extends HttpServlet {
 			member.setEmail((String)map.get("email"));
 			member.setPhone((String)map.get("phone"));
 			member.setMajor((String)map.get("major"));
-			member.setProfile("profile.jpg");
+			member.setProfile("defaultimg.jpg");
 			String[] subjects=((String)map.get("subject")).split(",");
 			List<MajorBean> list=new ArrayList<>();
 			MajorBean major=null;
@@ -58,12 +64,22 @@ public class MemberController extends HttpServlet {
 			Map<String,Object>tempMap=new HashMap<>();
 			tempMap.put("member", member);
 			tempMap.put("major", list);
-			service.add(tempMap);
+			String rs=service.add(tempMap);
+			Separator.cmd.setDirectory("common");
+			Separator.cmd.process();
+			System.out.println("컨트롤러 인서트 결과:"+rs);
 			DispatcherServlet.send(request, response);
 			break;
+		case Action.LIST:
+			System.out.println("Member List Enter");
+			tempMap=new HashMap<>();
+			tempMap.put("request", request);
+			tempMap.put("list", (List<StudentBean>)service.list());
+			tempMap.put("pageNumber", request.getParameter("pageNumber"));
+			new PageProxy().delegateTo(tempMap);
+			DispatcherServlet.send(request, response);
+			break; 
 		default:System.out.println("FAIL..");break;
 		}
 	}
-	//id=&password=1&name=이길동&birthday=&gender=male&email=leegd%40test.com&major=computer&subject=java&subject=c&
-	//subject=html&action=join&page=main
 }
