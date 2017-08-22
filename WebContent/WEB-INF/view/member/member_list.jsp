@@ -1,9 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../common/common_head.jsp" %>
+<jsp:include page="../common/common_head.jsp"/>
 <header>
 <jsp:include page="../common/navbar.jsp"/>
 </header>
 <div id="container">
+<div class="row">
+  <div class="col-lg-6" style="width: 500px;margin: 0 auto;">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+<div style="height: 40px;width:300px;"></div>
 	<table id="member_list_tab">
 		<tr>
 			<th>No.</th>
@@ -20,13 +31,18 @@
 		<tr>
 			<td>${i.num}</td>
 			<td>${i.id}</td>
-			<td>${i.name}</td>
+			<td><a onclick="detailStudent('${i.id}')">${i.name}</a></td>
 			<td>${i.ssn}</td>
 			<td>${i.phone}</td>
 			<td>${i.email}</td>
 			<td>${i.title}</td>
 			<td>${i.regdate}</td>
-			<td>수정/삭제</td>
+			<td>
+			<a onclick="updateStudent('${i.id}')">수정</a>
+			/
+			<a onclick="deleteStudent('${i.id}')">삭제</a>
+			</td>
+			
 		</tr>
 		</c:forEach>
 	</table>
@@ -47,7 +63,7 @@
 	    			<li class="active"><a href="#">${i.index}</a></li>
 	    		</c:when>
 	    		<c:otherwise>
-	    			<li ><a href="#" onclick="list('member','member_list',${i.index})">
+	    			<li ><a href="#" onclick="list('member','member_list','${i.index}')">
 	    				${i.index}</a></li>
 	    		</c:otherwise>
 	    	</c:choose>
@@ -68,7 +84,20 @@
 	  </ul>
 	</nav>
 </div>
-
+<script>
+function updateStudent(id){
+	alert('수정할 id'+id);
+	location.href="${ctx}/member.do?action=update&page=member_update&id="+id;
+}
+function deleteStudent(id){
+	alert('삭제할 id'+id);
+	location.href="${ctx}/member.do?action=delete&page=member_list&id="+id;
+}
+function detailStudent(id){
+	alert('조회할 id'+id);
+	location.href="${ctx}/member.do?action=detail&page=member_detail&id="+id;
+}
+</script>
 
 
 

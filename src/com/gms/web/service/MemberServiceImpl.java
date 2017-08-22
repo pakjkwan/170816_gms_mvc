@@ -27,13 +27,13 @@ public class MemberServiceImpl implements MemberService{
 		return rs;
 	}
 	@Override
-	public List<?> list() {
-		return MemberDAOImpl.getInstance().selectAll();
+	public List<?> list(Object o) {
+		return MemberDAOImpl.getInstance().selectAll(o);
 	}
 	@Override
 	public List<?> findByName(String name) {
 		
-		return MemberDAOImpl.getInstance().selectAll();
+		return null;
 	}
 
 	@Override
@@ -43,6 +43,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String count() {
+		System.out.println("카운트 ..");
 		return MemberDAOImpl.getInstance().count();
 	}
 

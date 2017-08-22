@@ -16,9 +16,10 @@ import com.gms.web.constant.Action;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
 import com.gms.web.domain.StudentBean;
-import com.gms.web.proxy.Agency;
-import com.gms.web.proxy.RowsHandler;
+import com.gms.web.proxy.BlockHandler;
+import com.gms.web.proxy.PageHandler;
 import com.gms.web.proxy.PageProxy;
+import com.gms.web.proxy.Proxy;
 import com.gms.web.service.MemberService;
 import com.gms.web.service.MemberServiceImpl;
 import com.gms.web.util.DispatcherServlet;
@@ -29,13 +30,11 @@ import com.gms.web.util.Separator;
 public class MemberController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	@SuppressWarnings("unchecked")
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("MemberController 진입");
 		Separator.init(request);
 		MemberBean member=new MemberBean();
 		MemberService service=MemberServiceImpl.getInstance();
-		
 		switch (request.getParameter("action")) {
 		case Action.MOVE:DispatcherServlet.send(request, response);break;
 		case Action.JOIN: 
@@ -72,14 +71,37 @@ public class MemberController extends HttpServlet {
 			break;
 		case Action.LIST:
 			System.out.println("Member List Enter");
-			tempMap=new HashMap<>();
-			tempMap.put("request", request);
-			tempMap.put("list", (List<StudentBean>)service.list());
-			tempMap.put("pageNumber", request.getParameter("pageNumber"));
-			new PageProxy().delegateTo(tempMap);
+			PageProxy pxy=new PageProxy(request);
+			pxy.setPageSize(5);
+			pxy.setBlockSize(5);
+			pxy.setTheNumberOfRows(Integer.parseInt(service.count()));
+			pxy.setPageNumber(Integer.parseInt(request.getParameter("pageNumber")));
+			int[] arr=PageHandler.attr(pxy);
+			int[] arr2=BlockHandler.attr(pxy);
+			pxy.execute(arr2,service.list(arr));
 			DispatcherServlet.send(request, response);
 			break; 
+		case Action.UPDATE: 
+			service.modify(service.findById(request.getParameter("id")));
+			DispatcherServlet.send(request, response);
+			break;
+		case Action.DELETE: 
+			//service.remove(request.getParameter("id"));
+			response.sendRedirect(request.getContextPath()
+					+"/member.do?action=list&page=member_list&pageNumber=1");
+			break;
+		case Action.DETAIL: 
+			request.setAttribute("student", service.findById(request.getParameter("id")));
+			DispatcherServlet.send(request, response);
+			break;
 		default:System.out.println("FAIL..");break;
 		}
 	}
 }
+
+
+
+
+
+
+

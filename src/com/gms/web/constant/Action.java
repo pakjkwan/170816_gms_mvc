@@ -7,5 +7,8 @@ public class Action {
 	public static final String LOGIN="login";
 	public static final String LOGOUT="logout";
 	public static final String LIST="list";
+	public static final String UPDATE="update";
+	public static final String DELETE="delete";
+	public static final String DETAIL="detail";
 	
 }

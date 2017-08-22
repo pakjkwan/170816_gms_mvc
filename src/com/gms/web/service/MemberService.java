@@ -7,7 +7,7 @@ import com.gms.web.domain.MemberBean;
 
 public interface MemberService {
 	public String add(Map<String,Object> map);
-	public List<?> list();
+	public List<?> list(Object o);
 	public List<?> findByName(String name);
 	public MemberBean findById(String id);
 	public String count();

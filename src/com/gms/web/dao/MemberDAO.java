@@ -7,7 +7,7 @@ import com.gms.web.domain.MemberBean;
 
 public interface MemberDAO {
 	public String insert(Map<?,?>map);
-	public List<?> selectAll();
+	public List<?> selectAll(Object o);
 	public List<?> selectByName(String name);
 	public MemberBean selectById(String id);
 	public String count();

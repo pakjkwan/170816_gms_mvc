@@ -13,6 +13,9 @@ public class CommandFactory {
 			case Action.LOGOUT:
 			case Action.JOIN:
 			case Action.LIST:
+			case Action.UPDATE:
+			case Action.DELETE:
+			case Action.DETAIL:
 			cmd=new MoveCommand(dir, action, page);
 			break;
 		default:System.out.println("Command Fail");break;

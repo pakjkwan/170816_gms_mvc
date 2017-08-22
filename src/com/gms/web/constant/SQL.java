@@ -30,10 +30,21 @@ public class SQL {
 	public static final String BOARD_DELETE= String.format("DELETE FROM %s WHERE %s=?", DB.TABLE_BOARD,DB.ARTICLE_SEQ);
 	public static final String MAJOR_INSERT=String.format("INSERT INTO %s(%s,%s,%s,%s) VALUES(?,?,?,?)",DB.TABLE_MAJOR,
 				DB.MAJOR_ID,DB.TITLE,DB.MEMBER_ID,DB.SUBJ_ID);
-	public static final String STUDENT_LIST=" select t.* "
-			+" from (select rownum rnum, s.* " 
-					+" from student s)t "
-			;
+	/*public static final String STUDENT_LIST=
+			" SELECT t2.* "
+			+" FROM (SELECT ROWNUM seq,t.* "
+			 +" FROM (SELECT * "
+			  +" FROM student "
+			  +" ORDER BY num DESC) t) t2 "
+			+" WHERE t2.seq BETWEEN ? AND ? ";*/
+	
+	public static final String STUDENT_LIST=
+	" select t.* "
+	+" from (select rownum rnum, s.* " 
+	+		" from student s)t "
+	+" where t.rnum between ? and ?";
+	public static final String STUDENT_COUNT=
+			String.format("SELECT COUNT(*) AS count FROM %s", DB.TABLE_STUDENT);
 }
 
 
