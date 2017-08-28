@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.gms.web.command.Command;
 import com.gms.web.constant.Action;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
@@ -35,11 +36,16 @@ public class MemberController extends HttpServlet {
 		Separator.init(request);
 		MemberBean member=new MemberBean();
 		MemberService service=MemberServiceImpl.getInstance();
+		Map<?,?> map=new HashMap<>();
+		PageProxy pxy=new PageProxy(request);
+		Command cmd=new Command();
+		pxy.setPageSize(5);
+		pxy.setBlockSize(5);
 		switch (request.getParameter("action")) {
 		case Action.MOVE:DispatcherServlet.send(request, response);break;
 		case Action.JOIN: 
 			System.out.println("=== join 진입 ===");	
-			Map<?,?> map=ParamsIterator.execute(request);
+			map=ParamsIterator.execute(request);
 			member.setId((String)map.get("id"));
 			member.setPassword((String)map.get("password"));
 			member.setName((String)map.get("name"));
@@ -64,25 +70,32 @@ public class MemberController extends HttpServlet {
 			tempMap.put("member", member);
 			tempMap.put("major", list);
 			String rs=service.add(tempMap);
-			Separator.cmd.setDirectory("common");
+			Separator.cmd.setDir("common");
 			Separator.cmd.process();
 			System.out.println("컨트롤러 인서트 결과:"+rs);
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.LIST:
 			System.out.println("Member List Enter");
-			PageProxy pxy=new PageProxy(request);
-			pxy.setPageSize(5);
-			pxy.setBlockSize(5);
-			pxy.setTheNumberOfRows(Integer.parseInt(service.count()));
-			pxy.setPageNumber(Integer.parseInt(request.getParameter("pageNumber")));
-			int[] arr=PageHandler.attr(pxy);
-			int[] arr2=BlockHandler.attr(pxy);
-			pxy.execute(arr2,service.list(arr));
+			pxy.setTheNumberOfRows(Integer.parseInt(service.count(cmd)));
+			pxy.setPageNumber(Integer.parseInt(
+					request.getParameter("pageNumber")));
+			pxy.execute(BlockHandler.attr(pxy),
+					service.list(PageHandler.attr(pxy)));
+			DispatcherServlet.send(request, response);
+			break; 
+		case Action.SEARCH:
+			map=ParamsIterator.execute(request);
+			pxy.setTheNumberOfRows(Integer.parseInt(service.count(cmd)));
+			cmd=PageHandler.attr(pxy);
+			cmd.setColumn("name");
+			cmd.setSearch(String.valueOf(map.get("search")));
+			request.setAttribute("list", service.findByName(cmd));
 			DispatcherServlet.send(request, response);
 			break; 
 		case Action.UPDATE: 
-			service.modify(service.findById(request.getParameter("id")));
+			cmd.setSearch(request.getParameter("id"));
+			service.modify(service.findById(cmd));
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.DELETE: 
@@ -91,7 +104,8 @@ public class MemberController extends HttpServlet {
 					+"/member.do?action=list&page=member_list&pageNumber=1");
 			break;
 		case Action.DETAIL: 
-			request.setAttribute("student", service.findById(request.getParameter("id")));
+			cmd.setSearch(request.getParameter("id"));
+			request.setAttribute("student", service.findById(cmd));
 			DispatcherServlet.send(request, response);
 			break;
 		default:System.out.println("FAIL..");break;

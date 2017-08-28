@@ -46,7 +46,7 @@
 		</tr>
 		</c:forEach>
 	</table>
-	<nav aria-label="Page navigation" style="width:400px;margin: 0 auto;">
+	 <nav aria-label="Page navigation" style="width:400px;margin: 0 auto;">
 	  <ul class="pagination">
 	  	<c:if test="${requestScope.prevBlock gt 0 }">
 	    <li><a href="#"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a></li>
@@ -78,36 +78,6 @@
 	    		<span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
 	    	</a></li>
 	    </c:if>
-	    
-	    
-	    
 	  </ul>
-	</nav>
+	</nav> 
 </div>
-<script>
-function updateStudent(id){
-	alert('수정할 id'+id);
-	location.href="${ctx}/member.do?action=update&page=member_update&id="+id;
-}
-function deleteStudent(id){
-	alert('삭제할 id'+id);
-	location.href="${ctx}/member.do?action=delete&page=member_list&id="+id;
-}
-function detailStudent(id){
-	alert('조회할 id'+id);
-	location.href="${ctx}/member.do?action=detail&page=member_detail&id="+id;
-}
-function searchStudent(){
-	var search=document.getElementById('search').value;
-	location.href="${ctx}/member.do?action=search&page=member_search&search="+search;
-	alert(search);
-}
-</script>
-
-
-
-
-
-
-
-

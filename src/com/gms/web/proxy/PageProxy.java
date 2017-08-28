@@ -19,6 +19,7 @@ public class PageProxy extends Proxy{
 	public PageProxy(HttpServletRequest request) {
 		super(request);
 	}
+	
 	public void execute(int[] arr,List<?>list) {
 		request.setAttribute("pageNumber", arr[0]);
 		request.setAttribute("theNumberOfPages", arr[1]);

@@ -1,38 +1,36 @@
 package com.gms.web.command;
 import com.gms.web.constant.*;
+
+import lombok.Getter;
+import lombok.Setter;
+
 public class Command implements Commandable{
-	protected String dir,action,page,view;
-
-	public String getView() {
-		return view;
+	@Getter 
+	protected String action,pageNumber,
+		view;
+	@Getter @Setter
+	protected String dir,startRow,endRow,
+		page,column,search;
+	
+	public void setPageNumber(String pageNumber){
+		this.pageNumber = 
+				(pageNumber==null)?
+						"1":pageNumber;
+		System.out.println("페이지번호: "+this.pageNumber);
 	}
-
-	public String getDirectory() {
-		return dir;
-	}
-
-	public void setDirectory(String dir) {
-		this.dir = dir;
-	}
-
-	public String getAction() {
-		return action;
-	}
-
 	public void setAction(String action) {
-		this.action = action;
+		this.action = 
+				(action==null)?
+						"move":action;
+		System.out.println("액션: "+this.action);
 	}
-
-	public String getPage() {
-		return page;
-	}
-
-	public void setPage(String page) {
-		this.page = page;
-	}
+	
 	@Override
 	public void process() {
-		this.view=Path.VIEW+dir+Path.SEPARATOR+page+Extension.JSP;
+		this.view=
+				(dir.equals("home"))?
+						"/WEB-INF/view/common/home.jsp":
+				Path.VIEW+dir+Path.SEPARATOR+page+Extension.JSP;
 		System.out.println("이동 페이지: "+view);
 	}
 	@Override

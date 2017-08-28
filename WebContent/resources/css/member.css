@@ -1,5 +1,4 @@
 @CHARSET "UTF-8";
-@IMPORT "common.css";
 /*index.html*/
 #index_tab{width: 70%;margin:0 auto;}
 #index_tab_tr>th{border: 1px solid black;width:30%;text-align: center;}

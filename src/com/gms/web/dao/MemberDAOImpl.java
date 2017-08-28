@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.gms.web.command.Command;
 import com.gms.web.constant.DB;
 import com.gms.web.constant.SQL;
 import com.gms.web.constant.Vendor;
@@ -77,14 +78,13 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public List<?> selectAll(Object o) {
+	public List<?> selectAll(Command cmd) {
 		List<StudentBean>list=new ArrayList<>();
-		int[] arr=(int[])o;
 		try {
 			conn=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection();
 			PreparedStatement pstmt=conn.prepareStatement(SQL.STUDENT_LIST);
-			pstmt.setString(1, String.valueOf(arr[0]));
-			pstmt.setString(2, String.valueOf(arr[1]));
+			pstmt.setString(1, cmd.getStartRow());
+			pstmt.setString(2, cmd.getEndRow());
 			ResultSet rs=pstmt.executeQuery();
 			StudentBean member=null;
 			while(rs.next()){
@@ -106,11 +106,11 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public List<MemberBean> selectByName(String name) {
+	public List<MemberBean> selectByName(Command cmd) {
 		List<MemberBean>list=new ArrayList<>();
 		try {
 			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYNAME);
-			pstmt.setString(1, name);
+			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs=pstmt.executeQuery();
 			MemberBean member=null;
 			while(rs.next()){
@@ -126,12 +126,12 @@ public class MemberDAOImpl implements MemberDAO{
 		return list;
 	}
 	@Override
-	public MemberBean selectById(String id) {
+	public MemberBean selectById(Command cmd) {
 		MemberBean member=null;
-		System.out.println("$ ID"+id);
+		System.out.println("$ ID"+cmd.getSearch());
 		try {
 			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD).getConnection().prepareStatement("select * from member where member_id like ?");
-			pstmt.setString(1, id);
+			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs=pstmt.executeQuery();
 			if(rs.next()){
 				member=new MemberBean();
@@ -145,7 +145,7 @@ public class MemberDAOImpl implements MemberDAO{
 		return member;
 	}
 	@Override
-	public String count() {
+	public String count(Command cmd) {
 		String count="";
 		
 		try {
@@ -175,11 +175,11 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public String delete(String id) {
+	public String delete(Command cmd) {
 		String rs="";
 		try {
 			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_DELETE);
-			pstmt.setString(1, id);
+			pstmt.setString(1, cmd.getSearch());
 			rs=String.valueOf(pstmt.executeUpdate());
 		} catch (Exception e) {
 			e.printStackTrace();
