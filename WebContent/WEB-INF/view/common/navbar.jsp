@@ -136,7 +136,8 @@
 	}
 	function detailStudent(id){
 		alert('조회할 id'+id);
-		location.href="${ctx}/member.do?action=detail&page=member_detail&id="+id;
+		location.href=
+			"${ctx}/member.do?action=detail&page=member_detail&id="+id;
 	}
 	function searchStudent(){
 		var search=document.getElementById('search').value;

@@ -105,7 +105,7 @@ public class MemberController extends HttpServlet {
 			break; 
 		case Action.UPDATE: 
 			cmd.setSearch(request.getParameter("id"));
-			service.modify(service.findById(cmd));
+			//service.modify(service.findById(cmd));
 			DispatcherServlet.send(request, response);
 			break;
 		case Action.DELETE: 

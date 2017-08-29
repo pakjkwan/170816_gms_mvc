@@ -136,18 +136,23 @@ public class MemberDAOImpl implements MemberDAO{
 		return list;
 	}
 	@Override
-	public MemberBean selectById(Command cmd) {
-		MemberBean member=null;
+	public StudentBean selectById(Command cmd) {
+		StudentBean member=null;
 		System.out.println("$ ID"+cmd.getSearch());
 		try {
 			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD).getConnection().prepareStatement("select * from member where member_id like ?");
 			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs=pstmt.executeQuery();
 			if(rs.next()){
-				member=new MemberBean();
-				member.setId(rs.getString(DB.MEMBER_ID));
+				member=new StudentBean();
+				member.setNum(rs.getString(DB.NUM));
+				member.setId(rs.getString(DB.ID));
 				member.setName(rs.getString(DB.NAME));
-				member.setPassword(rs.getString(DB.PASS));
+				member.setEmail(rs.getString(DB.EMAIL));
+				member.setPhone(rs.getString(DB.PHONE));
+				member.setRegdate(rs.getString(DB.REGDATE));
+				member.setSsn(rs.getString(DB.SSN));
+				member.setTitle(rs.getString(DB.TITLE));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -210,5 +215,24 @@ public class MemberDAOImpl implements MemberDAO{
 			e.printStackTrace();
 		}
 		return rs;
+	}
+	@Override
+	public MemberBean login(Command cmd) {
+		MemberBean member=null;
+		System.out.println("$ ID"+cmd.getSearch());
+		try {
+			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD).getConnection().prepareStatement("select * from member where member_id like ?");
+			pstmt.setString(1, cmd.getSearch());
+			ResultSet rs=pstmt.executeQuery();
+			if(rs.next()){
+				member=new MemberBean();
+				member.setId(rs.getString(DB.MEMBER_ID));
+				member.setName(rs.getString(DB.NAME));
+				member.setPassword(rs.getString(DB.PASS));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return member;
 	}
 }

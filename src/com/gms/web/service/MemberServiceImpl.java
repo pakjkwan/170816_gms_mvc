@@ -9,6 +9,7 @@ import com.gms.web.dao.MemberDAO;
 import com.gms.web.dao.MemberDAOImpl;
 import com.gms.web.domain.MajorBean;
 import com.gms.web.domain.MemberBean;
+import com.gms.web.domain.StudentBean;
 
 public class MemberServiceImpl implements MemberService{
 	public static MemberServiceImpl getInstance() {
@@ -38,7 +39,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public MemberBean findById(Command cmd) {
+	public StudentBean findById(Command cmd) {
 		return MemberDAOImpl.getInstance().selectById(cmd);
 	}
 
@@ -65,7 +66,7 @@ public class MemberServiceImpl implements MemberService{
 		Map<String,Object> map=new HashMap<>();
 		Command cmd=new Command();
 		cmd.setSearch(bean.getId());
-		MemberBean m=findById(cmd);
+		MemberBean m=MemberDAOImpl.getInstance().login(cmd);
 		String page=
 		 (m!=null)?
 				(bean.getPassword().equals(m.getPassword()))?
