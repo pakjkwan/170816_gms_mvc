@@ -49,9 +49,13 @@
 	<nav aria-label="Page navigation" style="width:400px;margin: 0 auto;">
 	  <ul class="pagination">
 	  	<c:if test="${requestScope.prevBlock gt 0 }">
-	    <li><a href="#"><span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span></a></li>
 	    <li>
-	      <a href="#" aria-label="Previous">
+	    	<a onclick="list('member', 'member_list', '1')">
+	    		<span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+	    	</a>
+	    </li>
+	    <li>
+	      <a onclick="list('member', 'member_list', '${requestScope.prevBlock}')" aria-label="Previous">
 	        <span aria-hidden="true">&laquo;</span>
 	      </a>
 	    </li>
@@ -70,39 +74,20 @@
 	    </c:forEach>
 	    <c:if test="${requestScope.nextBlock le requestScope.theNumberOfPages}">
 	    	<li>
-		      <a href="#" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		      </a>
+		      	<a onclick="list('member', 'member_list', '${requestScope.endPage+1}')"  aria-label="Next">
+		        	<span aria-hidden="true">&raquo;</span>
+		      	</a>
 		    </li>
-	    <li><a href="#">
-	    		<span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
-	    	</a></li>
+	    	<li>	
+	    		<a onclick="list('member', 'member_list', '${requestScope.theNumberOfPages}')" >
+	    			<span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+	    		</a>
+	    	</li>
 	    </c:if>
-	    
-	    
-	    
 	  </ul>
 	</nav>
 </div>
-<script>
-function updateStudent(id){
-	alert('수정할 id'+id);
-	location.href="${ctx}/member.do?action=update&page=member_update&id="+id;
-}
-function deleteStudent(id){
-	alert('삭제할 id'+id);
-	location.href="${ctx}/member.do?action=delete&page=member_list&id="+id;
-}
-function detailStudent(id){
-	alert('조회할 id'+id);
-	location.href="${ctx}/member.do?action=detail&page=member_detail&id="+id;
-}
-function searchStudent(){
-	var search=document.getElementById('search').value;
-	location.href="${ctx}/member.do?action=search&page=member_search&search="+search;
-	alert(search);
-}
-</script>
+
 
 
 

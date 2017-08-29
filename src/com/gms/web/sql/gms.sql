@@ -308,8 +308,12 @@ FROM (SELECT ROWNUM seq,t.*
   ORDER BY num DESC) t) t2
 WHERE t2.seq BETWEEN 1 AND 5;
 
+select count(*) from student
+where name like ?
+;
 
 
+'%홍%'  '%'
 
 
 

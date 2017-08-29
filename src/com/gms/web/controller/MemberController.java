@@ -86,11 +86,21 @@ public class MemberController extends HttpServlet {
 			break; 
 		case Action.SEARCH:
 			map=ParamsIterator.execute(request);
-			pxy.setTheNumberOfRows(Integer.parseInt(service.count(cmd)));
-			cmd=PageHandler.attr(pxy);
+			
 			cmd.setColumn("name");
 			cmd.setSearch(String.valueOf(map.get("search")));
-			request.setAttribute("list", service.findByName(cmd));
+			pxy.setTheNumberOfRows(
+					Integer.parseInt(service.count(cmd)));
+			cmd=PageHandler.attr(pxy);
+			cmd.setPageNumber(
+					request.getParameter("pageNumber"));
+			cmd.setStartRow(PageHandler.attr(pxy).getStartRow());
+			cmd.setEndRow(PageHandler.attr(pxy).getEndRow());
+			pxy.setPageNumber(
+					Integer.parseInt(
+					cmd.getPageNumber()));
+			pxy.execute(BlockHandler.attr(pxy),
+					service.findByName(cmd));
 			DispatcherServlet.send(request, response);
 			break; 
 		case Action.UPDATE: 

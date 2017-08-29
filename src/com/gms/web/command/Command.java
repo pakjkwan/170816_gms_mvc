@@ -7,10 +7,10 @@ import lombok.Setter;
 public class Command implements Commandable{
 	@Getter 
 	protected String action,pageNumber,
-		view;
+		view,column,search;
 	@Getter @Setter
 	protected String dir,startRow,endRow,
-		page,column,search;
+		page;
 	
 	public void setPageNumber(String pageNumber){
 		this.pageNumber = 
@@ -23,6 +23,17 @@ public class Command implements Commandable{
 				(action==null)?
 						"move":action;
 		System.out.println("액션: "+this.action);
+	}
+	public void setColumn(String column) {
+		this.column = 
+				(column==null)?
+						"none":column;
+		System.out.println("컬럼: "+this.column);
+	}
+	public void setSearch(String search) {
+		this.search = (search==null)?
+				"none":search;
+		System.out.println("검색어: "+this.search);
 	}
 	
 	@Override

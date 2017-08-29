@@ -44,7 +44,13 @@ public class SQL {
 	+		" from student s)t "
 	+" where t.rnum between ? and ?";
 	public static final String STUDENT_COUNT=
-			String.format("SELECT COUNT(*) AS count FROM %s", DB.TABLE_STUDENT);
+		String.format(
+			"SELECT COUNT(*) AS count FROM %s WHERE %s like ?",
+				DB.TABLE_STUDENT,"name");
+	public static final String STUDENT_FINDBYNAME=
+			String.format(
+					"SELECT * FROM Student WHERE %s like ?",
+					"name");
 }
 
 

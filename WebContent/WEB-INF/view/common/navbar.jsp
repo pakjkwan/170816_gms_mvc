@@ -126,6 +126,22 @@
 		logout.setAttribute("style","color:white");
 		logout.setAttribute("onclick","logout('common','index')");
 	}
+	function updateStudent(id){
+		alert('수정할 id'+id);
+		location.href="${ctx}/member.do?action=update&page=member_update&id="+id;
+	}
+	function deleteStudent(id){
+		alert('삭제할 id'+id);
+		location.href="${ctx}/member.do?action=delete&page=member_list&id="+id;
+	}
+	function detailStudent(id){
+		alert('조회할 id'+id);
+		location.href="${ctx}/member.do?action=detail&page=member_detail&id="+id;
+	}
+	function searchStudent(){
+		var search=document.getElementById('search').value;
+		location.href="${ctx}/member.do?action=search&page=member_list&search="+search;
+	}
 </script>
 
 

@@ -33,8 +33,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 	@Override
 	public List<?> findByName(Command cmd) {
-		
-		return null;
+		System.out.println("findByName("+cmd.getSearch()+")");
+		return MemberDAOImpl.getInstance().selectByName(cmd);
 	}
 
 	@Override

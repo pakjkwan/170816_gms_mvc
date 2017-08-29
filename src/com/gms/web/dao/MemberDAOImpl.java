@@ -106,18 +106,28 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public List<MemberBean> selectByName(Command cmd) {
-		List<MemberBean>list=new ArrayList<>();
+	public List<StudentBean> selectByName(Command cmd) {
+		System.out.println("selectByName("+cmd.getSearch()+")");
+		System.out.println("selectByName("+cmd.getColumn()+")");
+		List<StudentBean>list=new ArrayList<>();
 		try {
-			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD).getConnection().prepareStatement(SQL.MEMBER_FINDBYNAME);
-			pstmt.setString(1, cmd.getSearch());
+			PreparedStatement pstmt=DatabaseFactory
+					.createDatabase(Vendor.ORACLE, DB.USERNAME, DB.PASSWORD)
+					.getConnection().prepareStatement(SQL.STUDENT_FINDBYNAME);
+			
+			pstmt.setString(1, "%"+cmd.getSearch()+"%");
 			ResultSet rs=pstmt.executeQuery();
-			MemberBean member=null;
+			StudentBean member=null;
 			while(rs.next()){
-				member=new MemberBean();
+				member=new StudentBean();
+				member.setNum(rs.getString(DB.NUM));
 				member.setId(rs.getString(DB.ID));
 				member.setName(rs.getString(DB.NAME));
-				member.setPassword(rs.getString(DB.PASS));
+				member.setEmail(rs.getString(DB.EMAIL));
+				member.setPhone(rs.getString(DB.PHONE));
+				member.setRegdate(rs.getString(DB.REGDATE));
+				member.setSsn(rs.getString(DB.SSN));
+				member.setTitle(rs.getString(DB.TITLE));
 				list.add(member);
 			}
 		} catch (Exception e) {
@@ -146,16 +156,31 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	@Override
 	public String count(Command cmd) {
+		System.out.println("count("+cmd.getSearch()+")");
+		System.out.println("count("+cmd.getColumn()+")");
 		String count="";
-		
 		try {
-			ResultSet rs=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD).getConnection().prepareStatement(SQL.STUDENT_COUNT).executeQuery();
+			conn=DatabaseFactory
+					.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD)
+					.getConnection();
+			PreparedStatement pstmt=null;
+			if(cmd.getSearch()==null){
+				System.out.println("cmd.getSearch() is null");
+				pstmt=conn.prepareStatement(SQL.STUDENT_COUNT);
+				pstmt.setString(1, "%");
+			}else{
+				System.out.println("cmd.getSearch() is not null");
+				pstmt=conn.prepareStatement(SQL.STUDENT_COUNT);
+				pstmt.setString(1, "%"+cmd.getSearch()+"%");
+			}
+			ResultSet rs=pstmt.executeQuery();
 			if(rs.next()){
 				count=rs.getString("count");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("DAO count: "+count);
 		return count;
 	}
 
