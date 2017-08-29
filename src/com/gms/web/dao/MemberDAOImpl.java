@@ -140,7 +140,8 @@ public class MemberDAOImpl implements MemberDAO{
 		StudentBean member=null;
 		System.out.println("$ ID"+cmd.getSearch());
 		try {
-			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD).getConnection().prepareStatement("select * from member where member_id like ?");
+			PreparedStatement pstmt=DatabaseFactory.createDatabase(Vendor.ORACLE, DB.USERNAME,DB.PASSWORD)
+					.getConnection().prepareStatement(SQL.STUDENT_FINDBYID);
 			pstmt.setString(1, cmd.getSearch());
 			ResultSet rs=pstmt.executeQuery();
 			if(rs.next()){

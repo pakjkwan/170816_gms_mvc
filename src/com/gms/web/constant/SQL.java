@@ -51,6 +51,9 @@ public class SQL {
 			String.format(
 					"SELECT * FROM Student WHERE %s like ?",
 					"name");
+	public static final String STUDENT_FINDBYID=
+			String.format(
+					"SELECT * FROM %s WHERE id like ?", "Student");
 }
 
 

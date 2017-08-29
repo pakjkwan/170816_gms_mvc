@@ -143,6 +143,7 @@
 		var search=document.getElementById('search').value;
 		location.href="${ctx}/member.do?action=search&page=member_list&search="+search;
 	}
+	
 </script>
 
 

@@ -115,6 +115,7 @@ public class MemberController extends HttpServlet {
 			break;
 		case Action.DETAIL: 
 			cmd.setSearch(request.getParameter("id"));
+			System.out.println("###"+service.findById(cmd).getName());
 			request.setAttribute("student", service.findById(cmd));
 			DispatcherServlet.send(request, response);
 			break;
