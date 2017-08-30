@@ -42,7 +42,7 @@
         </li>
     </ul>
     <span class="float-right">${sessionScope.user.name} &nbsp;
-    	<a id="logout" onclick="" style="color: white">로그아웃</a></span>
+    	<a id="logout" >로그아웃</a></span>
   </div>
 </nav>
 <script>
@@ -124,7 +124,7 @@
 		u3c[4].setAttribute("onclick","deleteTarget('게시글 ')");
 		var logout=document.getElementById("logout");
 		logout.setAttribute("style","color:white");
-		logout.setAttribute("onclick","logout('common','index')");
+		logout.setAttribute("onclick","logout('common','home')");
 	}
 	function updateStudent(id){
 		alert('수정할 id'+id);
@@ -143,6 +143,7 @@
 		var search=document.getElementById('search').value;
 		location.href="${ctx}/member.do?action=search&page=member_list&search="+search;
 	}
+
 	
 </script>
 

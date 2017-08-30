@@ -15,7 +15,7 @@
                     <div class="" style="border-bottom:1px solid black">
                       <span style="font-size: 50px">${requestScope.student.name}</span>
                       &nbsp;&nbsp;&nbsp;&nbsp;
-                      <button id="updateBtn" onclick="moveTo('member','member_update')">
+                      <button id="updateBtn" >
                       		정보수정
                       </button>
                     </div>
@@ -116,27 +116,7 @@
               
           </div>
       </div>
-      <script>
-      function test(){
-    	  alert('aaa');
-    	  document.querySelector('#updateBtn').onclick=studentInfo;
-    	  
-      }
-      
-      function studentInfo(){
-    	  var id='id',
-    	      id_val='${requestScope.student.id}',
-    	      name='name',
-    	      name_val='${requestScope.student.name}',
-    	      email='email',
-    	      email_val='${requestScope.student.email}'
-    	      ;
-    	  sessionStorage.setItem(id,id_val);    
-    	  sessionStorage.setItem(name,name_val);    
-    	  sessionStorage.setItem(email,email_val);    
-      }
-      window.addEventListener('load',test,false);
-      </script>
+
       
       
       
