@@ -46,7 +46,8 @@
   </div>
 </nav>
 <script>
-	window.onload=navbarLoad();
+	navbar.init();
+	//window.onload=navbarLoad();
 	function logout(dir,page){
 		location.href="${ctx}/"+dir+".do?action=logout&page="+page;
 	}
@@ -60,14 +61,15 @@
 		location.href="${ctx}/"+dir+".do?action=list&page="+page
 					+"&pageNumber="+pageNumber;
 	}
+	/*
 	function mainLoad(){
 		var main_ul=[];
-		var u1=document.getElementById("main_ul_stu");
+		 var u1=document.getElementById("main_ul_stu");
 		var u2=document.getElementById("main_ul_grade");
 		var u3=document.getElementById("main_ul_board");
 		u1.setAttribute("class", "list-group");
 		u2.setAttribute("class", "list-group");
-		u3.setAttribute("class", "list-group");
+		u3.setAttribute("class", "list-group"); 
 		var u1c = u1.children;
 		var u2c = u2.children;
 		var u3c = u3.children;
@@ -94,6 +96,7 @@
 		u3c[2].setAttribute("onclick","moveTo('board','board_detail')");
 		u3c[3].setAttribute("onclick","deleteTarget('게시글 ')");
 	}
+	*/
 	function navbarLoad(){
 		var u1=document.getElementById("navbar_ul_stu");
 		var u2=document.getElementById("navbar_ul_grade");
@@ -143,7 +146,7 @@
 		var search=document.getElementById('search').value;
 		location.href="${ctx}/member.do?action=search&page=member_list&search="+search;
 	}
-
+	
 	
 </script>
 

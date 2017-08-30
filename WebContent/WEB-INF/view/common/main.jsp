@@ -37,7 +37,7 @@
 </div>
 
 <script>
-window.onload=mainLoad();
+main.init();
 </script>
 
 
